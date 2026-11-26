@@ -100,7 +100,7 @@ require __DIR__ . "/../components/admin/inicio.php";
                 "Registrar y administrar clientes.",
             "icono" => "♙",
             "color" => "azul",
-            "ruta" => null
+            "ruta" => "views/admin/clientes/index.php"
         ],
 
         [

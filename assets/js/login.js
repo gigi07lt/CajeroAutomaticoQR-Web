@@ -68,16 +68,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (esCliente) {
 
             labelUsuario.textContent =
-                "Nombre de usuario";
+                "Cédula";
 
             usuario.placeholder =
-                "Ingresa tu usuario";
+                "Ingresa tu cédula";
 
-            usuario.maxLength = 50;
+            usuario.maxLength = 10;
 
-            usuario.inputMode = "text";
+            usuario.inputMode = "numeric";
 
-            usuario.removeAttribute("pattern");
+            usuario.pattern = "[0-9]{10}";
 
             labelClave.textContent =
                 "PIN de seguridad";
@@ -236,12 +236,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (rol.value === "CLIENTE") {
 
-                if (!/^[A-Za-z0-9._-]{1,50}$/.test(usuario.value)) {
+                if (!/^[0-9]{10}$/.test(usuario.value)) {
 
                     evento.preventDefault();
 
                     error.textContent =
-                        "Ingresa un nombre de usuario válido.";
+                        "Ingresa una cédula de 10 dígitos.";
 
                     return;
                 }

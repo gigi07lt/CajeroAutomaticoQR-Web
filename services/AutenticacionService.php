@@ -41,14 +41,14 @@ class AutenticacionService
             return $this->error("Credenciales incorrectas.");
         }
 
-        // Validar formato del nombre de usuario del cliente.
+        // Validar formato de la cédula del cliente.
 
         if (
             $rol === "CLIENTE" &&
-            !preg_match('/\A[A-Za-z0-9._-]{1,50}\z/', $usuario)
+            !preg_match('/\A[0-9]{10}\z/', $usuario)
         ) {
             return $this->error(
-                "Nombre de usuario incorrecto."
+                "Cédula incorrecta."
             );
         }
 
@@ -56,8 +56,9 @@ class AutenticacionService
 
             $this->conexion->beginTransaction();
 
-            $datos = $this->usuarioModelo
-                          ->buscarPorUsuario($usuario, true);
+            $datos = $rol === "CLIENTE"
+                ? $this->usuarioModelo->buscarPorCedula($usuario, true)
+                : $this->usuarioModelo->buscarPorUsuario($usuario, true);
 
             // Verificar existencia y rol del usuario.
 

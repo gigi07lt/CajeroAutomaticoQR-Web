@@ -110,7 +110,7 @@ require __DIR__ . "/../components/admin/inicio.php";
                 "Administrar usuarios y credenciales.",
             "icono" => "⚿",
             "color" => "morado",
-            "ruta" => null
+            "ruta" => "views/admin/usuarios/index.php"
         ],
 
         [
@@ -120,7 +120,7 @@ require __DIR__ . "/../components/admin/inicio.php";
                 "Registrar y administrar cuentas bancarias.",
             "icono" => "$",
             "color" => "verde",
-            "ruta" => null
+            "ruta" => "views/admin/cuentas/index.php"
         ],
 
         [
@@ -130,17 +130,17 @@ require __DIR__ . "/../components/admin/inicio.php";
                 "Consultar y descargar imágenes QR.",
             "icono" => "▦",
             "color" => "naranja",
-            "ruta" => null
+            "ruta" => "views/admin/tarjetas/index.php"
         ],
 
         [
             "titulo" => "Movimientos",
             "valor" => $datos["movimientos"],
             "descripcion" =>
-                "Consultar movimientos y generar reportes.",
+                "Consultar y filtrar movimientos bancarios.",
             "icono" => "⇄",
             "color" => "azul",
-            "ruta" => null
+            "ruta" => "views/admin/movimientos/index.php"
         ]
 
     ];

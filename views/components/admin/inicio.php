@@ -28,11 +28,15 @@ if (
         ) ?> | Banco FISEI
     </title>
 
-    <link rel="stylesheet"
-          href="<?= urlAplicacion('assets/css/style.css') ?>">
 
-    <link rel="stylesheet"
-          href="<?= urlAplicacion('assets/css/admin.css') ?>">
+<link rel="stylesheet"
+      href="<?= urlAplicacion('assets/css/style.css') ?>">
+
+<link rel="stylesheet"
+      href="<?= urlAplicacion('assets/css/admin.css') ?>">
+
+<link rel="stylesheet"
+      href="<?= urlAplicacion('assets/css/crud.css') ?>">
 
 </head>
 

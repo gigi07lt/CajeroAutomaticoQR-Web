@@ -1,0 +1,583 @@
+/* =========================================
+   ENCABEZADOS DE MODULOS
+   ========================================= */
+
+.crud-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.crud-encabezado h1 {
+    font-size: 30px;
+    letter-spacing: -0.5px;
+    margin: 0 0 8px;
+}
+
+.crud-encabezado p {
+    font-size: 15px;
+    margin: 0;
+}
+
+/* =========================================
+   CONTENEDORES GENERALES
+   ========================================= */
+
+.crud-contenedor,
+.crud-formulario-contenedor,
+.crud-detalle-seccion {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 25px;
+    box-shadow: var(--sombra);
+}
+
+/* =========================================
+   BUSCADOR
+   ========================================= */
+
+.crud-buscador {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.crud-campo-busqueda {
+    flex: 1;
+    min-width: 200px;
+    max-width: 450px;
+}
+
+.crud-campo-busqueda label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.crud-campo-busqueda input {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 14px;
+    background: var(--blanco);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font: inherit;
+    outline: none;
+}
+
+.crud-campo-busqueda input:focus {
+    border-color: var(--primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================================
+   RESUMEN DE REGISTROS
+   ========================================= */
+
+.crud-resumen {
+    margin-bottom: 15px;
+}
+
+.crud-resumen p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--texto-secundario);
+}
+
+.crud-resumen strong {
+    color: var(--texto);
+}
+
+/* =========================================
+   TABLAS RESPONSIVAS
+   ========================================= */
+
+.crud-tabla-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.crud-tabla {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.crud-tabla th {
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--borde);
+    white-space: nowrap;
+}
+
+.crud-tabla td {
+    padding: 15px 18px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.crud-tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.crud-tabla tbody tr:hover {
+    background: #f8fafc;
+}
+
+.crud-tabla td.crud-sin-resultados {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--texto-secundario);
+}
+
+/* =========================================
+   BOTONES DE ACCIONES
+   ========================================= */
+
+.crud-acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.crud-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 13px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Accion de consulta */
+
+.accion-ver {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.accion-ver:hover {
+    background: #e2e8f0;
+}
+
+/* Accion de edicion */
+
+.accion-editar {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.accion-editar:hover {
+    background: #bfdbfe;
+}
+
+/* Accion de eliminacion */
+
+.accion-eliminar {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.accion-eliminar:hover {
+    background: #fecaca;
+}
+
+.crud-accion:focus-visible {
+    outline: 2px solid var(--primario);
+    outline-offset: 3px;
+}
+
+.crud-accion:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.crud-formulario-eliminar {
+    display: inline-flex;
+    margin: 0;
+}
+
+/* =========================================
+   PAGINACION
+   ========================================= */
+
+.crud-paginacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.crud-paginacion-info {
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin: 0;
+}
+
+.crud-paginacion-enlaces {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.crud-pagina {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 36px;
+    padding: 7px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--blanco);
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+a.crud-pagina:hover {
+    background: #eff6ff;
+    color: var(--primario);
+    border-color: var(--primario);
+}
+
+.crud-pagina.pagina-activa {
+    background: var(--primario);
+    border-color: var(--primario);
+    color: var(--blanco);
+}
+
+.crud-pagina.pagina-deshabilitada {
+    color: #64748b;
+    background: #f1f5f9;
+    cursor: default;
+}
+
+/* =========================================
+   FORMULARIOS DE REGISTRO Y EDICION
+   ========================================= */
+
+.crud-formulario-contenedor {
+    width: 100%;
+    max-width: 650px;
+}
+
+.crud-formulario-contenedor h2 {
+    font-size: 21px;
+    margin: 0 0 8px;
+}
+
+.crud-formulario-contenedor > p {
+    margin: 0 0 24px;
+    font-size: 14px;
+}
+
+.crud-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.crud-formulario .grupo-campo {
+    margin: 0;
+}
+
+.crud-formulario .grupo-campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.crud-formulario .grupo-campo input,
+.crud-formulario .grupo-campo select,
+.crud-formulario .grupo-campo textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    background: var(--blanco);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font: inherit;
+    outline: none;
+}
+
+.crud-formulario .grupo-campo input:focus,
+.crud-formulario .grupo-campo select:focus,
+.crud-formulario .grupo-campo textarea:focus {
+    border-color: var(--primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Campos no modificables */
+
+.crud-formulario input[readonly] {
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: default;
+}
+
+.crud-ayuda {
+    display: block;
+    margin-top: 8px;
+    color: var(--texto-secundario);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.crud-formulario-acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--borde);
+}
+
+/* =========================================
+   MENSAJES DE CONFIRMACION
+   ========================================= */
+
+.admin-contenido .alerta {
+    margin-bottom: 20px;
+}
+
+.crud-formulario .alerta,
+.crud-detalle-seccion .alerta {
+    margin: 0;
+}
+
+.alerta-exito {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 14px;
+}
+
+/* =========================================
+   CONSULTA INDIVIDUAL
+   ========================================= */
+
+.crud-detalle-seccion {
+    margin-bottom: 22px;
+}
+
+.crud-detalle-seccion h2 {
+    font-size: 20px;
+    margin: 0 0 20px;
+}
+
+.crud-detalle-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.crud-detalle-encabezado h2 {
+    margin: 0;
+}
+
+.crud-detalle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 0;
+}
+
+.crud-detalle-campo {
+    min-width: 0;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.crud-detalle-campo dt {
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin-bottom: 8px;
+}
+
+.crud-detalle-campo dd {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.crud-saldo {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* =========================================
+   ESTADOS DE USUARIOS Y CUENTAS
+   ========================================= */
+
+.crud-estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.estado-activo {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.estado-inactivo {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.estado-bloqueado {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =========================================
+   DISENO RESPONSIVO - TABLETS
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .crud-encabezado h1 {
+        font-size: 27px;
+    }
+
+    .crud-contenedor,
+    .crud-formulario-contenedor,
+    .crud-detalle-seccion {
+        padding: 20px;
+    }
+
+    .crud-tabla td,
+    .crud-tabla th {
+        padding: 13px 15px;
+    }
+
+    .crud-detalle-grid {
+        gap: 15px;
+    }
+
+}
+
+/* =========================================
+   DISENO RESPONSIVO - CELULARES
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .crud-encabezado {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .crud-encabezado h1 {
+        font-size: 24px;
+    }
+
+    .crud-encabezado .btn {
+        text-align: center;
+    }
+
+    .crud-contenedor,
+    .crud-formulario-contenedor,
+    .crud-detalle-seccion {
+        padding: 16px;
+    }
+
+    .crud-buscador {
+        align-items: stretch;
+    }
+
+    .crud-campo-busqueda {
+        flex: 1 1 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .crud-buscador .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .crud-paginacion {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .crud-formulario-acciones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .crud-formulario-acciones .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .crud-detalle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .crud-detalle-encabezado {
+        align-items: flex-start;
+    }
+
+    .crud-detalle-seccion h2 {
+        font-size: 18px;
+    }
+
+}
+
+/* =========================================
+   ACCESIBILIDAD
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .crud-accion {
+        transition: none;
+    }
+
+}

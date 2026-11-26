@@ -6,5 +6,6 @@ return [
     "database" => "cajero_web_db",
     "username" => "root",
     "password" => "",
-    "base_path" => "/CajeroAutomaticoQR-Web"
+    "base_path" => "/CajeroAutomaticoQR-Web",
+    "qr_manual_desarrollo" => false
 ];

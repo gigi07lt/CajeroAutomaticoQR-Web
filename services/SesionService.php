@@ -30,6 +30,7 @@ class SesionService
         ];
 
         $_SESSION["ultima_actividad"] = time();
+        $_SESSION["inicio_sesion"] = time();
     }
 
     public static function obtenerUsuario(): ?array

@@ -1,119 +1,166 @@
 <?php
 
 require_once __DIR__ . "/../../middleware/roles.php";
-require_once __DIR__ . "/../../services/CsrfService.php";
+
+require_once __DIR__ .
+    "/../../controllers/DashboardController.php";
+
+// Verificar permisos del administrador.
 
 $usuario = exigirRol("ADMIN");
 
+// Configurar la pagina.
+
+$tituloPagina = "Panel administrativo";
+
+$paginaActual = "inicio";
+
+// Obtener las estadisticas.
+
+$errorDashboard = "";
+
+$datos = [];
+
+try {
+
+    $controlador = new DashboardController(
+        obtenerConexion()
+    );
+
+    $datos = $controlador->obtenerDatos();
+
+} catch (Throwable $e) {
+
+    error_log($e->getMessage());
+
+    http_response_code(503);
+
+    $errorDashboard =
+        "No se pudieron cargar los módulos. " .
+        "Intenta nuevamente.";
+}
+
+// Cargar la estructura administrativa.
+
+require __DIR__ . "/../components/admin/inicio.php";
+
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
+<section class="admin-bienvenida">
 
-<head>
+    <h1>Panel administrativo</h1>
 
-    <meta charset="UTF-8">
+    <p class="texto-secundario">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        Bienvenido,
 
-    <title>Administración | Banco FISEI</title>
+        <?= htmlspecialchars(
+            $usuario["usuario"],
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>.
 
-    <link rel="stylesheet"
-          href="<?= urlAplicacion('assets/css/style.css') ?>">
+        Selecciona un módulo para comenzar.
 
-</head>
+    </p>
 
-<body>
+</section>
 
-    <header class="panel-header">
+<?php if ($errorDashboard !== ""): ?>
 
-        <div class="marca">
+    <div class="alerta alerta-error" role="alert">
 
-            <div class="marca-icono">F</div>
+        <?= htmlspecialchars(
+            $errorDashboard,
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>
 
-            <div>
-                <strong>BANCO FISEI</strong>
-                <small>Administración</small>
-            </div>
+    </div>
 
-        </div>
+    <a href="<?= urlAplicacion(
+        'views/admin/index.php'
+    ) ?>"
+       class="btn btn-primario">
 
-        <form method="POST"
-              action="<?= urlAplicacion('logout.php') ?>">
+        Volver a intentar
 
-            <input type="hidden"
-                   name="csrf_token"
-                   value="<?= CsrfService::generarToken() ?>">
+    </a>
 
-            <button type="submit"
-                    class="btn btn-secundario">
-                Cerrar sesión
-            </button>
+<?php else: ?>
 
-        </form>
+    <?php
 
-    </header>
+    $tarjetas = [
 
-    <main class="panel-contenedor">
+        [
+            "titulo" => "Clientes registrados",
+            "valor" => $datos["clientes"],
+            "descripcion" =>
+                "Registrar y administrar clientes.",
+            "icono" => "♙",
+            "color" => "azul",
+            "ruta" => null
+        ],
 
-        <h1>Panel administrativo</h1>
+        [
+            "titulo" => "Usuarios",
+            "valor" => $datos["usuarios"],
+            "descripcion" =>
+                "Administrar usuarios y credenciales.",
+            "icono" => "⚿",
+            "color" => "morado",
+            "ruta" => null
+        ],
 
-        <p class="texto-secundario">
+        [
+            "titulo" => "Cuentas bancarias",
+            "valor" => $datos["cuentas"],
+            "descripcion" =>
+                "Registrar y administrar cuentas bancarias.",
+            "icono" => "$",
+            "color" => "verde",
+            "ruta" => null
+        ],
 
-            Bienvenido,
+        [
+            "titulo" => "Tarjetas QR activas",
+            "valor" => $datos["tarjetas"],
+            "descripcion" =>
+                "Consultar y descargar imágenes QR.",
+            "icono" => "▦",
+            "color" => "naranja",
+            "ruta" => null
+        ],
 
-            <?= htmlspecialchars(
-                $usuario["usuario"],
-                ENT_QUOTES,
-                "UTF-8"
-            ) ?>
+        [
+            "titulo" => "Movimientos",
+            "valor" => $datos["movimientos"],
+            "descripcion" =>
+                "Consultar movimientos y generar reportes.",
+            "icono" => "⇄",
+            "color" => "azul",
+            "ruta" => null
+        ]
 
-        </p>
+    ];
 
-        <div class="alerta alerta-info">
-            Has iniciado sesión correctamente
-            con permisos administrativos.
-        </div>
+    ?>
 
-        <div class="panel-grid">
+    <section class="modulos-grid"
+             aria-label="Módulos administrativos">
 
-            <article class="panel-tarjeta">
-                <h3>Gestión de usuarios</h3>
-                <p class="texto-secundario">
-                    Crear, editar y administrar usuarios.
-                </p>
-                <small>Próximamente</small>
-            </article>
+        <?php foreach ($tarjetas as $tarjeta): ?>
 
-            <article class="panel-tarjeta">
-                <h3>Cuentas bancarias</h3>
-                <p class="texto-secundario">
-                    Administrar las cuentas de los clientes.
-                </p>
-                <small>Próximamente</small>
-            </article>
+            <?php require __DIR__ .
+                "/../components/admin/tarjeta-modulo.php"; ?>
 
-            <article class="panel-tarjeta">
-                <h3>Tarjetas QR</h3>
-                <p class="texto-secundario">
-                    Emitir, consultar y anular tarjetas.
-                </p>
-                <small>Próximamente</small>
-            </article>
+        <?php endforeach; ?>
 
-            <article class="panel-tarjeta">
-                <h3>Reportes</h3>
-                <p class="texto-secundario">
-                    Consultar movimientos y generar reportes.
-                </p>
-                <small>Próximamente</small>
-            </article>
+    </section>
 
-        </div>
+<?php endif; ?>
 
-    </main>
+<?php
 
-</body>
-
-</html>
+require __DIR__ . "/../components/admin/fin.php";

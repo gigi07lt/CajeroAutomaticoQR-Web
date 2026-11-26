@@ -41,14 +41,14 @@ class AutenticacionService
             return $this->error("Credenciales incorrectas.");
         }
 
-        // Validar formato de la cedula.
+        // Validar formato del nombre de usuario del cliente.
 
         if (
             $rol === "CLIENTE" &&
-            !preg_match('/^[0-9]{10}$/D', $usuario)
+            !preg_match('/\A[A-Za-z0-9._-]{1,50}\z/', $usuario)
         ) {
             return $this->error(
-                "La cedula debe contener 10 digitos."
+                "Nombre de usuario incorrecto."
             );
         }
 

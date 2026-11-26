@@ -3,7 +3,7 @@ require_once __DIR__.'/../../../controllers/ModuloAdministrativoController.php';
 $usuario=exigirRol('ADMIN');
 if(!isset($modulo)||!in_array($modulo,['usuarios','cuentas','tarjetas','movimientos'],true)){http_response_code(404);exit;}
 $paginaActual=$modulo;
-$titulos=['usuarios'=>'Gestión de usuarios','cuentas'=>'Gestión de cuentas bancarias','tarjetas'=>'Consulta de tarjetas QR','movimientos'=>'Consulta de movimientos'];
+$titulos=['usuarios'=>'Gestión de usuarios','cuentas'=>'Gestión de cuentas bancarias','tarjetas'=>'Consulta e historial de tarjetas QR','movimientos'=>'Consulta de movimientos'];
 $tituloPagina=$titulos[$modulo];$ruta=urlAplicacion('views/admin/'.$modulo.'/index.php');
 function h($v): string {return htmlspecialchars((string)$v,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 function enlace(array $p): string {global $ruta;return h($ruta.'?'.http_build_query($p));}
@@ -31,18 +31,13 @@ try{
         header('Location: '.$destino,true,303);exit;
     }
     $vista=ModuloAdministrativoController::texto($_GET,'vista')?:'lista';
-    if(!in_array($vista,['lista','crear','ver','qr','descargar'],true))throw new DomainException('Vista inválida.');
+    if($modulo==='tarjetas' && in_array($vista,['qr','descargar'],true)){http_response_code(403);exit('La imagen y descarga de QR están reservadas al cliente titular.');}
+    if(!in_array($vista,['lista','crear','ver'],true))throw new DomainException('Vista inválida.');
     if($vista==='crear'){
         if(!in_array($modulo,['usuarios','cuentas'],true))throw new DomainException('Módulo de solo consulta.');$disponibles=$modelo->disponibles();
-    }elseif(in_array($vista,['ver','qr','descargar'],true)){
-        if(in_array($vista,['qr','descargar'],true)&&$modulo!=='tarjetas')throw new DomainException('Vista inválida.');
+    }elseif($vista==='ver'){
         $id=in_array($modulo,['usuarios','movimientos'],true)?ModuloAdministrativoController::id($_GET['id']??null):ModuloAdministrativoController::texto($_GET,'id');
         $detalle=$modelo->ver($id);if(!$detalle){http_response_code(404);throw new DomainException('Registro no encontrado.');}
-        if($vista==='qr'||$vista==='descargar'){
-            $png=QrPng::png($detalle['codigo_qr']);header('Content-Type: image/png');header('X-Content-Type-Options: nosniff');
-            if($vista==='descargar')header('Content-Disposition: attachment; filename="QR-'.preg_replace('/[^A-Z0-9-]/','',$detalle['codigo_qr']).'.png"');
-            echo $png;exit;
-        }
     }else{
         $pagina=ModuloAdministrativoController::pagina($_GET['pagina']??1);
         if($modulo==='movimientos'){$filtros=ConsultaMovimientosService::filtros($_GET);$datos=$modelo->listar($filtros,$pagina);}
@@ -52,7 +47,7 @@ try{
 catch(Throwable $e){error_log($e->getMessage());http_response_code(503);$error='No se pudo cargar el módulo. Intenta nuevamente.';}
 require __DIR__.'/inicio.php';
 ?>
-<section class="crud-encabezado"><div><h1><?=h($tituloPagina)?></h1><p class="texto-secundario">Administración de Banco FISEI.</p></div>
+<section class="crud-encabezado"><div><h1><?=h($tituloPagina)?></h1></div>
 <?php if($vista!=='lista'):?><a class="btn btn-secundario" href="<?=h($ruta)?>">← Volver al listado</a><?php elseif(in_array($modulo,['usuarios','cuentas'],true)):?><a class="btn btn-primario" href="<?=enlace(['vista'=>'crear'])?>">+ <?=$modulo==='usuarios'?'Nuevo usuario':'Nueva cuenta'?></a><?php endif;?></section>
 <?php if($flash):?><div role="status" class="alerta <?=$flash['ok']?'alerta-exito':'alerta-error'?>"><?=h($flash['texto'])?></div><?php endif;?>
 <?php if($error!==''):?><div role="alert" class="alerta alerta-error"><?=h($error)?></div><a class="btn btn-secundario" href="<?=h($ruta)?>">Regresar</a>

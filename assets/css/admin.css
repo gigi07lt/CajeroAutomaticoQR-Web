@@ -67,16 +67,13 @@
     min-width: 0;
     background: var(--blanco);
     border: 1px solid var(--borde);
-    border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 4px;
+    padding: 18px;
+
+
 }
 
-.modulo-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--sombra);
-}
+
 
 .modulo-superior {
     display: flex;
@@ -92,7 +89,7 @@
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    border-radius: 12px;
+    border-radius: 4px;
     font-size: 27px;
     font-weight: 600;
 }
@@ -122,7 +119,7 @@
 /* Cantidad de registros */
 
 .modulo-cantidad {
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 700;
     line-height: 1.2;
     overflow-wrap: anywhere;
@@ -241,7 +238,7 @@
 @media (prefers-reduced-motion: reduce) {
 
     .modulo-card {
-        transition: none;
+
     }
 
     .modulo-card:hover {
@@ -249,3 +246,5 @@
     }
 
 }
+
+.modulo-enlace { margin-top: auto; }

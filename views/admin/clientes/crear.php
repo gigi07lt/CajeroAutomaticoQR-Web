@@ -124,12 +124,7 @@ require __DIR__ .
 
         <h1>Registrar cliente</h1>
 
-        <p class="texto-secundario">
-
-            Ingresa los datos personales
-            del nuevo cliente.
-
-        </p>
+        
 
     </div>
 
@@ -146,11 +141,7 @@ require __DIR__ .
 
     <h2>Datos personales</h2>
 
-    <p class="texto-secundario">
-
-        Todos los campos son obligatorios.
-
-    </p>
+    
 
     <?php if ($errorFormulario !== ""): ?>
 
@@ -236,18 +227,7 @@ require __DIR__ .
 
         </div>
 
-        <!-- INFORMACION ADICIONAL -->
-
-        <div class="alerta alerta-info">
-
-            El registro del cliente no genera
-            automáticamente credenciales de acceso
-            ni cuentas bancarias.
-
-            Estas podrán administrarse
-            desde sus respectivos módulos.
-
-        </div>
+        
 
         <!-- BOTONES DEL FORMULARIO -->
 

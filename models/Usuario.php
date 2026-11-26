@@ -31,6 +31,17 @@ class Usuario
         return $resultado ?: null;
     }
 
+    // La cédula identifica al titular, aunque su nombre de usuario sea personalizado.
+    public function buscarPorCedula(string $cedula, bool $bloquearFila = false): ?array
+    {
+        $sql = "SELECT u.* FROM usuarios u JOIN clientes c ON c.id = u.id_cliente
+                WHERE c.cedula = ? AND u.rol = 'CLIENTE'";
+        if ($bloquearFila) $sql .= " FOR UPDATE";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute([$cedula]);
+        return $stmt->fetch() ?: null;
+    }
+
     public function buscarPorId(int $id): ?array
     {
         $sql = "SELECT id, id_cliente, usuario,

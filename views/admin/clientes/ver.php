@@ -132,12 +132,7 @@ require __DIR__ .
 
         <h1>Detalle del cliente</h1>
 
-        <p class="texto-secundario">
-
-            Consulta la información personal
-            y las relaciones bancarias del cliente.
-
-        </p>
+        
 
     </div>
 

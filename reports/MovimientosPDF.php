@@ -9,11 +9,9 @@ class MovimientosPDF extends FPDF
 
     private function texto(string $valor): string
     {
-        return mb_convert_encoding(
-            $valor,
-            'Windows-1252',
-            'UTF-8'
-        );
+        return function_exists('mb_convert_encoding')
+            ? mb_convert_encoding($valor, 'Windows-1252', 'UTF-8')
+            : (iconv('UTF-8', 'Windows-1252//TRANSLIT', $valor) ?: ($valor === '0' ? '0' : ''));
     }
 
     // Encabezado de cada página.
@@ -165,11 +163,11 @@ class MovimientosPDF extends FPDF
             ['ID', 12],
             ['Fecha y hora', 32],
             ['Cuenta', 25],
-            ['Cliente', 45],
-            ['Tipo', 48],
-            ['Monto', 22],
-            ['Saldo final', 24],
-            ['Cuenta relacionada', 35],
+            ['Cliente', 40],
+            ['Tipo', 43],
+            ['Monto', 30],
+            ['Saldo final', 31],
+            ['Cta. relacionada', 30],
             ['Referencia', 34]
         ];
 
@@ -203,27 +201,21 @@ class MovimientosPDF extends FPDF
         return $tipos[$tipo] ?? $tipo;
     }
 
-    // Ajustar textos largos al ancho de una celda.
-
-    private function ajustarTexto(
-        string $valor,
-        float $ancho
-    ): string
+    // Dividir por ancho real, conservando también referencias largas sin espacios.
+    private function lineas(string $valor, float $ancho): array
     {
         $valor = $this->texto($valor);
-
-        if ($this->GetStringWidth($valor) <= $ancho - 3) {
-            return $valor;
+        $lineas = [];
+        $actual = '';
+        foreach (str_split($valor) as $caracter) {
+            if ($caracter === "\n" || ($actual !== '' && $this->GetStringWidth($actual . $caracter) > $ancho - 3)) {
+                $lineas[] = $actual;
+                $actual = '';
+            }
+            if ($caracter !== "\n") $actual .= $caracter;
         }
-
-        while (
-            $valor !== '' &&
-            $this->GetStringWidth($valor . '...') > $ancho - 3
-        ) {
-            $valor = substr($valor, 0, -1);
-        }
-
-        return $valor . '...';
+        $lineas[] = $actual;
+        return $lineas;
     }
 
     // Mostrar una fila de movimientos.
@@ -233,14 +225,7 @@ class MovimientosPDF extends FPDF
         bool $relleno
     ): void
     {
-        // Crear una página y repetir los encabezados.
-
-        if ($this->GetY() + 8 > $this->GetPageHeight() - 20) {
-
-            $this->AddPage();
-            $this->encabezadoTabla();
-        }
-
+        $this->SetFont('Arial', '', 8);
         $this->SetFillColor(241, 245, 249);
 
         $columnas = [
@@ -256,30 +241,30 @@ class MovimientosPDF extends FPDF
 
             [$movimiento['numero_cuenta'], 25, 'C'],
 
-            [$movimiento['nombres'], 45, 'L'],
+            [$movimiento['nombres'], 40, 'L'],
 
             [
                 $this->tipoMovimiento($movimiento['tipo']),
-                48, 'L'
+                43, 'L'
             ],
 
             [
                 '$' . number_format(
                     (float) $movimiento['monto'], 2
                 ),
-                22, 'R'
+                30, 'R'
             ],
 
             [
                 '$' . number_format(
                     (float) $movimiento['saldo_resultante'], 2
                 ),
-                24, 'R'
+                31, 'R'
             ],
 
             [
                 $movimiento['cuenta_relacionada'] ?? '-',
-                35, 'C'
+                30, 'C'
             ],
 
             [
@@ -288,23 +273,32 @@ class MovimientosPDF extends FPDF
             ]
         ];
 
+        $filas = [];
+        $max = 1;
         foreach ($columnas as $columna) {
-
-            $this->Cell(
-                $columna[1],
-                8,
-                $this->ajustarTexto(
-                    (string) $columna[0],
-                    $columna[1]
-                ),
-                1,
-                0,
-                $columna[2],
-                $relleno
-            );
+            $lineas = $this->lineas((string)$columna[0], $columna[1]);
+            $filas[] = $lineas;
+            $max = max($max, count($lineas));
         }
-
-        $this->Ln();
+        $alto = max(8, $max * 4 + 2);
+        if ($this->GetY() + $alto > $this->GetPageHeight() - 20) {
+            $this->AddPage('L', 'A4');
+            $this->encabezadoTabla();
+        }
+        $this->SetFont('Arial', '', 8);
+        $this->SetFillColor(241,245,249);
+        $this->SetTextColor(15,23,42);
+        $x = $this->GetX(); $y = $this->GetY();
+        foreach ($columnas as $i => $columna) {
+            $w = $columna[1];
+            $this->Rect($x, $y, $w, $alto, $relleno ? 'DF' : 'D');
+            foreach ($filas[$i] as $j => $linea) {
+                $this->SetXY($x, $y + 1 + $j * 4);
+                $this->Cell($w, 4, $linea, 0, 0, $columna[2]);
+            }
+            $x += $w;
+        }
+        $this->SetXY(10, $y + $alto);
     }
 
     // Generar el documento completo.
@@ -343,6 +337,7 @@ class MovimientosPDF extends FPDF
 
         $this->Ln(4);
 
+        if ($this->GetY() + 21 > $this->GetPageHeight() - 20) $this->AddPage('L', 'A4');
         $this->encabezadoTabla();
 
         // Reporte sin movimientos.

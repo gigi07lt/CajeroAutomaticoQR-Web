@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../libraries/QrPng.php';
 if (PHP_SAPI !== 'cli') { http_response_code(403); exit('Acceso no permitido.'); }
 require_once __DIR__.'/../controllers/ModuloAdministrativoController.php';
 $ok=0;$error=0;

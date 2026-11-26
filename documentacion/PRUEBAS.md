@@ -34,7 +34,7 @@ Usa una base de pruebas. Crea clientes nuevos para estas comprobaciones, no modi
 3. Cierra sesión e inicia como CLIENTE con `cliente.prueba` y `0123`. Confirma el acceso. Comprueba que el cliente original `1800000001` conserva su acceso.
 4. Como ADMIN, comprueba desactivar/reactivar, bloquear con tres intentos de PIN erróneo, desbloquear y restablecer PIN; verifica que el PIN viejo deja de autenticar y que el administrador principal no tiene acciones modificables.
 5. Registra una cuenta de diez dígitos no usada y saldo inicial de 125.50. Comprueba rechazo de saldo negativo, más de dos decimales, número duplicado y cliente sin usuario activo. Crea una segunda cuenta del mismo tipo con saldo cero.
-6. En Tarjetas verifica un QR por cada cuenta activa. Descarga PNG y escanéalo con un lector independiente: el texto debe coincidir con el código mostrado. Desactiva la primera cuenta: conserva saldo y QR histórico inactivo con fecha de anulación. Reactívala: debe existir un QR distinto activo y el anterior inactivo. No deben duplicarse tarjetas activas al repetir la operación.
+6. En Tarjetas verifica un QR por cada cuenta activa. Desde Mis QR del titular descarga el PNG vigente y escanéalo con un lector independiente: el texto debe coincidir con el código mostrado. Desactiva la primera cuenta: conserva saldo y QR histórico inactivo con fecha de anulación. Reactívala: debe existir un QR distinto activo y el anterior inactivo. No deben duplicarse tarjetas activas al repetir la operación.
 7. Intenta eliminar la cuenta con saldo 125.50: debe rechazarse. Elimina la cuenta de saldo cero y sin movimientos: sus tarjetas deben desaparecer en la misma transacción. Los casos con movimiento propio y relacionado están cubiertos por la suite de integración.
 8. Abre Movimientos: si no hay operaciones previas, debe mostrar cero resultados. Prueba filtros combinados, fechas inválidas e invertidas, limpiar filtros y navegación. No hay formulario de escritura ni datos demo. Los casos de varias páginas están cubiertos por la suite transaccional.
 9. Comprueba con navegador en modo móvil el listado, tablas desplazables, formularios y paginación de los cuatro módulos.
@@ -43,4 +43,8 @@ Usa una base de pruebas. Crea clientes nuevos para estas comprobaciones, no modi
 
 ## Límites del simulador
 
-El saldo inicial es un atributo de apertura, no un movimiento del cajero; no se genera un depósito ficticio. Los QR históricos se conservan cuando una cuenta se desactiva/reactiva y se retiran al eliminar físicamente una cuenta autorizada. El módulo de tarjetas solo consulta y descarga. La futura fase transaccional debe validar que la cuenta y su QR estén activos antes de cualquier operación. Las credenciales de demostración y los PIN de cuatro dígitos no son apropiados para un banco real.
+El saldo inicial es un atributo de apertura, no un movimiento del cajero; no se genera un depósito ficticio. Los QR históricos se conservan cuando una cuenta se desactiva/reactiva y se retiran al eliminar físicamente una cuenta autorizada. El módulo administrativo de tarjetas solo consulta; las imágenes y descargas vigentes son exclusivas del titular. La futura fase transaccional debe validar que la cuenta y su QR estén activos antes de cualquier operación. Las credenciales de demostración y los PIN de cuatro dígitos no son apropiados para un banco real.
+
+## Actualización posterior
+
+El usuario confirmó en XAMPP las 234 pruebas de la fase 4.6 antes de agregar FPDF. Las pruebas posteriores a la entrega de la fase 5 y la validación final están descritas en `PRUEBAS-FASE5.md`.

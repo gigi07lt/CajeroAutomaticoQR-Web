@@ -5,7 +5,6 @@ require_once __DIR__.'/../services/GestionUsuariosService.php';
 require_once __DIR__.'/../services/GestionCuentasService.php';
 require_once __DIR__.'/../services/ConsultaMovimientosService.php';
 require_once __DIR__.'/../models/TarjetaAdministrativa.php';
-require_once __DIR__.'/../libraries/QrPng.php';
 /** Entrada común de los cuatro módulos; todas las escrituras requieren POST y CSRF. */
 class ModuloAdministrativoController
 {

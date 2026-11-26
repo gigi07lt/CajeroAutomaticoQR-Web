@@ -10,8 +10,8 @@
     --borde: #dbe3ee;
     --error: #b91c1c;
     --exito: #15803d;
-    --radio: 12px;
-    --sombra: 0 12px 35px rgba(15, 23, 42, 0.08);
+    --radio: 4px;
+    --sombra: none;
 }
 
 * {
@@ -24,7 +24,7 @@
 
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: Arial, sans-serif;
     background: var(--fondo);
     color: var(--texto);
     line-height: 1.5;
@@ -61,7 +61,7 @@ a {
     border-radius: var(--radio);
     padding: 12px 20px;
     font-weight: 600;
-    transition: background 0.2s;
+
 }
 
 .btn-primario {
@@ -98,7 +98,7 @@ a {
     width: 100%;
     min-height: 46px;
     border: 1px solid var(--borde);
-    border-radius: 9px;
+    border-radius: 4px;
     padding: 10px 13px;
     outline: none;
     background: var(--blanco);
@@ -108,12 +108,12 @@ a {
 .grupo-campo input:focus,
 .grupo-campo select:focus {
     border-color: var(--primario);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+
 }
 
 .alerta {
     padding: 12px 15px;
-    border-radius: 8px;
+    border-radius: 4px;
     margin-bottom: 18px;
     font-size: 14px;
 }
@@ -141,7 +141,7 @@ a {
     color: var(--blanco);
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: 4px;
     display: grid;
     place-items: center;
     font-size: 26px;
@@ -163,7 +163,7 @@ a {
 .panel-header {
     background: var(--azul-oscuro);
     color: var(--blanco);
-    padding: 20px 5%;
+    padding: 14px 5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -179,9 +179,10 @@ a {
 
 .panel-tarjeta {
     background: var(--blanco);
-    padding: 25px;
+    border: 1px solid var(--borde);
+    padding: 18px;
     border-radius: var(--radio);
-    box-shadow: var(--sombra);
+
 }
 
 .panel-grid {
@@ -195,3 +196,5 @@ a {
 .panel-tarjeta h3 {
     margin-bottom: 8px;
 }
+
+.btn:disabled { opacity: .6; cursor: not-allowed; }

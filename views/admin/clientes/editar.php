@@ -167,12 +167,7 @@ require __DIR__ .
 
         <h1>Editar cliente</h1>
 
-        <p class="texto-secundario">
-
-            Actualiza los datos personales
-            del cliente registrado.
-
-        </p>
+        
 
     </div>
 
@@ -207,11 +202,7 @@ require __DIR__ .
 
         <h2>Datos personales</h2>
 
-        <p class="texto-secundario">
-
-            Modifica únicamente los nombres completos.
-
-        </p>
+        
 
         <?php if ($errorFormulario !== ""): ?>
 
@@ -294,16 +285,7 @@ require __DIR__ .
 
             </div>
 
-            <!-- INFORMACION ADICIONAL -->
-
-            <div class="alerta alerta-info">
-
-                La actualización de los nombres
-                no modifica las credenciales de acceso
-                ni las cuentas bancarias asociadas
-                al cliente.
-
-            </div>
+            
 
             <!-- BOTONES DEL FORMULARIO -->
 

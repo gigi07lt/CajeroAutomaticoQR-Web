@@ -5,5 +5,6 @@ return [
     "port" => "3306",
     "database" => "cajero_web_db",
     "username" => "root",
-    "password" => ""
+    "password" => "",
+    "base_path" => "/CajeroAutomaticoQR-Web"
 ];

@@ -581,3 +581,41 @@ a.crud-pagina:hover {
     }
 
 }
+
+/* Componentes compartidos de los módulos administrativos. */
+.crud-filtros .crud-campo-busqueda { flex: 1 1 190px; max-width: none; }
+.crud-campo-busqueda select { width:100%; min-height:45px; padding:10px 14px; border:1px solid var(--borde); border-radius:8px; background:var(--blanco); color:var(--texto); font:inherit; }
+.crud-qr { display:block; max-width:100%; height:auto; border:1px solid var(--borde); margin:20px 0; }
+@media(max-width:600px){.crud-filtros .crud-campo-busqueda{flex-basis:100%;min-width:0;}}
+
+
+/* Boton de reportes PDF */
+
+.btn-reporte {
+    background-color: #15803d;
+    color: #ffffff;
+    border: 1px solid #15803d;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.btn-reporte:hover {
+    background-color: #166534;
+    border-color: #166534;
+    color: #ffffff;
+}
+
+.btn-reporte:focus-visible {
+    outline: 3px solid #86efac;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .btn-reporte {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}

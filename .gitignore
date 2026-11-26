@@ -1,0 +1,27 @@
+# Configuracion privada
+.env
+.env.*
+!.env.example
+/config/config.php
+
+# Dependencias de Composer
+/vendor/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Archivos generados
+/storage/qr/
+/storage/reportes/
+
+# Copias de bases de datos
+*.sql.bak
+
+# Configuracion del editor
+.vscode/
+.idea/
+
+# Sistema operativo
+Thumbs.db
+.DS_Store

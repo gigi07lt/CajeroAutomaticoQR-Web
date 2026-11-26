@@ -1,0 +1,1 @@
+console.log("Banco FISEI: sistema web iniciado correctamente.");

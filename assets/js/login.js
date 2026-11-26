@@ -68,16 +68,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (esCliente) {
 
             labelUsuario.textContent =
-                "Número de cédula";
+                "Nombre de usuario";
 
             usuario.placeholder =
-                "Ingresa tus 10 dígitos";
+                "Ingresa tu usuario";
 
-            usuario.maxLength = 10;
+            usuario.maxLength = 50;
 
-            usuario.inputMode = "numeric";
+            usuario.inputMode = "text";
 
-            usuario.pattern = "[0-9]{10}";
+            usuario.removeAttribute("pattern");
 
             labelClave.textContent =
                 "PIN de seguridad";
@@ -138,17 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         usuario.focus();
     });
 
-    // Permitir solo numeros para clientes.
-
     usuario.addEventListener("input", function () {
-
-        if (rol.value === "CLIENTE") {
-
-            usuario.value = usuario.value
-                .replace(/\D/g, "")
-                .slice(0, 10);
-        }
-
         error.textContent = "";
     });
 
@@ -246,12 +236,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (rol.value === "CLIENTE") {
 
-                if (!/^[0-9]{10}$/.test(usuario.value)) {
+                if (!/^[A-Za-z0-9._-]{1,50}$/.test(usuario.value)) {
 
                     evento.preventDefault();
 
                     error.textContent =
-                        "La cédula debe tener 10 dígitos.";
+                        "Ingresa un nombre de usuario válido.";
 
                     return;
                 }

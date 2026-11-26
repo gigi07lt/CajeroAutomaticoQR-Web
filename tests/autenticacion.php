@@ -100,16 +100,16 @@ try {
         !$resultado["exito"]
     );
 
-    // PRUEBA 5: cedula incorrecta.
+    // PRUEBA 5: nombre de usuario con formato incorrecto.
 
     $resultado = $servicio->autenticar(
-        "12345",
+        "usuario con espacios",
         "1234",
         "CLIENTE"
     );
 
     comprobar(
-        "Rechazo de cedula incorrecta",
+        "Rechazo de usuario con formato incorrecto",
         !$resultado["exito"]
     );
 
@@ -159,6 +159,7 @@ try {
     ]);
 
     $idCliente = (int) $conexion->lastInsertId();
+    $nombreUsuario = "prueba_" . bin2hex(random_bytes(8));
 
     $stmt = $conexion->prepare(
         "INSERT INTO usuarios
@@ -168,7 +169,7 @@ try {
 
     $stmt->execute([
         $idCliente,
-        $cedula,
+        $nombreUsuario,
         password_hash("1234", PASSWORD_DEFAULT)
     ]);
 
@@ -177,7 +178,7 @@ try {
     // PRUEBA 8: primer intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "9999",
         "CLIENTE"
     );
@@ -194,7 +195,7 @@ try {
     // PRUEBA 9: reinicio de intentos.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "1234",
         "CLIENTE"
     );
@@ -202,7 +203,7 @@ try {
     $datos = $modelo->buscarPorId($idUsuario);
 
     comprobar(
-        "Reinicio de intentos con PIN correcto",
+        "Acceso personalizado y reinicio de intentos con PIN correcto",
         $resultado["exito"] &&
         (int) $datos["intentos_fallidos"] === 0
     );
@@ -210,7 +211,7 @@ try {
     // PRUEBA 10: PIN con formato incorrecto.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "12",
         "CLIENTE"
     );
@@ -226,7 +227,7 @@ try {
     // Segundo intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "9999",
         "CLIENTE"
     );
@@ -245,7 +246,7 @@ try {
     // Tercer intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "9999",
         "CLIENTE"
     );
@@ -264,7 +265,7 @@ try {
     // PRUEBA 13: usuario bloqueado con PIN correcto.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "1234",
         "CLIENTE"
     );
@@ -289,7 +290,7 @@ try {
     // PRUEBA 14: usuario desactivado.
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "1234",
         "CLIENTE"
     );
@@ -310,7 +311,7 @@ try {
     $stmt->execute([$idUsuario]);
 
     $resultado = $servicio->autenticar(
-        $cedula,
+        $nombreUsuario,
         "1234",
         "CLIENTE"
     );

@@ -1,37 +1,41 @@
 # CajeroAutomaticoQR-Web — Banco FISEI
 
-Simulador académico de cajero automático. Entrega administrativa hasta la fase 4.6, basada en el proyecto del commit `2c2e733`.
+Simulador académico de cajero automático. Entrega de la fase 5 con integración de captura QR, basada en `536722a` (PR #7, fase 4.8). No conecta con bancos reales ni representa dinero real.
 
-## Ejecutar en XAMPP
+## Ejecutar sobre el proyecto existente
 
-**Si ya tienes funcionando la fase 4.2:** no vuelvas a importar las tablas ni a ejecutar los datos de prueba. Conserva la base `cajero_web_db` y tu archivo privado `config/config.php`. Haz una copia de seguridad del proyecto y de la base de datos antes de reemplazar archivos.
+1. Respalda tu proyecto y la base `cajero_web_db`. Desde Git Bash, en `develop` limpio y sincronizado, crea `feature/cajero-cliente`.
+2. Extrae el ZIP a una carpeta temporal y copia **su contenido** sobre `C:\xampp\htdocs\CajeroAutomaticoQR-Web`. Conserva `.git` y `config/config.php`. El ZIP no contiene esos elementos.
+3. No vuelvas a importar SQL ni ejecutar datos de prueba: se conserva el esquema y todos los registros. No hay migraciones nuevas.
+4. Para probar los QR sin cámara, añade una clave al array privado de `config/config.php`: `"qr_manual_desarrollo" => true` (separa las entradas con comas). Por defecto es `false` y el servidor además exige una conexión loopback (`127.0.0.1`, `::1` o equivalente). No habilitar en hosting.
+5. Inicia Apache y MySQL. Abre `http://localhost:8080/CajeroAutomaticoQR-Web/index.php`. Selecciona Cliente e inicia sesión exclusivamente con cédula y PIN. En Mis cuentas elige una cuenta y valida su número y QR activo.
+6. Para una prueba local con los datos de demostración originales, el cliente `1800000001` usa el PIN `1234` y posee las cuentas `2200000001` y `2200000006`; la cuenta `2200000002` pertenece a otro cliente. Verifica los datos actuales en ADMIN antes de probar. Las imágenes QR vigentes se obtienen exclusivamente desde Mis QR del propio titular. El administrador consulta los registros e historial. No uses credenciales demo en hosting.
 
-1. Extrae el contenido del ZIP en una carpeta temporal. El ZIP tiene los archivos del proyecto en su raíz (no contiene `.git` ni configuración privada).
-2. Copia los archivos a `C:\xampp\htdocs\CajeroAutomaticoQR-Web`, conservando `config/config.php` y `.git` de tu proyecto anterior. Consulta `documentacion/GIT-FLOW.md` si vas a registrar los cambios en Git.
-3. Inicia Apache y MySQL. Abre `http://localhost:8080/CajeroAutomaticoQR-Web/index.php` (ajusta el puerto si corresponde).
-4. Entra como administrador con las credenciales locales existentes. Los datos de demostración originales usan `admin` y `AdminFisei2026!`; no son credenciales de producción.
+## Instalación desde cero
 
-**Instalación desde cero:** requiere PHP 8.0 o superior, PDO MySQL, mbstring, sesiones y zlib. XAMPP dispone habitualmente de estas extensiones. Copia `config/config.example.php` a `config/config.php` y configura host, puerto, base de datos, usuario, contraseña y `base_path`. Para tu entorno local anterior, el puerto MySQL es 3307 y Apache 8080; la plantilla mantiene el puerto MySQL estándar 3306. En phpMyAdmin importa, en este orden, `sql/cajero_db.sql` y `sql/002_seguridad.sql` **solo en una base nueva**. Si quieres los datos académicos iniciales, ejecuta una sola vez `/c/xampp/php/php.exe sql/datos_prueba.php` desde Git Bash. No ejecutes el script sobre una base ya poblada.
+PHP 8.0+ de 64 bits, PDO MySQL, mbstring (o iconv para PDF), sesiones y zlib. Copia `config/config.example.php` a `config/config.php`; configura host, puerto, base, usuario, contraseña y `base_path`. Para el entorno XAMPP previo: MySQL 3307 y Apache 8080; la plantilla usa 3306. Solo en una BD nueva, importa `sql/cajero_db.sql` y `sql/002_seguridad.sql` en ese orden. Opcionalmente ejecuta `sql/datos_prueba.php` una vez desde CLI para datos de simulación. El esquema no cambió. PHP y MySQL utilizan la hora de Ecuador continental.
 
-## Módulos administrativos
+## Panel administrativo (4.1–4.8)
 
-- 4.1 Dashboard: indicadores dinámicos y acceso a los cinco módulos.
-- 4.2 Clientes: CRUD, búsqueda, paginación, dependencias y cédula inmutable (conservado).
-- 4.3 Usuarios: registro de credenciales CLIENTE con nombre personalizado y PIN de cuatro dígitos; activación, desactivación, desbloqueo y restablecimiento del PIN. ADMIN protegido y sin eliminación física de usuarios.
-- 4.4 Cuentas: número manual de diez dígitos, saldo inicial no negativo y usuario activo requerido; múltiples cuentas por cliente. Estado editable; eliminación transaccional solo con saldo cero y sin movimientos propios ni relacionados.
-- 4.5 Tarjetas: emisión automática al crear una cuenta, desactivación conjunta y nueva emisión al reactivar; consulta de tarjetas activas e históricas, PNG generado localmente, descarga protegida por sesión ADMIN.
-- 4.6 Movimientos: solo lectura, filtros combinables, detalle, orden reciente primero y diez registros por página. No se agregan movimientos de demostración; el módulo queda vacío si la base no contiene movimientos.
+Se conserva el dashboard, gestión de clientes, credenciales, cuentas, tarjetas QR, movimientos y reportes administrativos FPDF. Los QR históricos permanecen inactivos al reactivar una cuenta; se emite un nuevo código. Se ajustó el PDF administrativo para conservar referencias completas de transferencias y mantener la orientación horizontal de todas sus páginas.
 
-No se necesita migración de esquema para estas cuatro fases. No se incluyen reportes FPDF, operaciones del cajero para clientes ni despliegue de hosting (fases futuras).
+## Cajero cliente (fase 5)
 
-## Cambio de acceso de clientes
+- Inicio de sesión exclusivamente por cédula y PIN del cliente; el administrador conserva usuario y contraseña. Los nombres personalizados se conservan como datos administrativos. El panel inicial tiene solo Mis cuentas y Mis QR.
+- Mis cuentas y tarjetas propias, con PNG únicamente de QR vigentes de cuentas activas. El listado previo a la selección no muestra saldos.
+- Selección de cuenta mediante número y QR activo coincidente (escaneo o manual local). El saldo aparece únicamente dentro de la cuenta. Volver a Mis cuentas, al inicio o a Mis QR invalida la selección y los tokens. La selección se invalida si la cuenta se desactiva o su tarjeta cambia.
+- Información de cuenta y comprobante PDF de consulta de saldo, sin crear movimiento.
+- Retiro simulado: $10–$300, múltiplos de $10, límite diario $1000 por cuenta. Montos rápidos y manual.
+- Depósito simulado inmediato: $10–$1000, solo a la cuenta seleccionada.
+- Transferencia: destinatario solo mediante QR activo, $10–$500, sin comisión, cuenta distinta (puede ser propia), nombre y número para confirmar. Una transacción registra ambas partidas con referencia común. Sin PIN adicional para operaciones de dinero.
+- Comprobantes PDF de operaciones recién realizadas, disponibles en la pantalla de resultado hasta salir de ella o cinco minutos; no se pueden solicitar comprobantes antiguos por ID desde el historial. Para transferencias recibidas de otra sesión, se muestra un acceso reciente en el menú si llegaron durante la sesión actual y en los últimos cinco minutos. El comprobante de salida pertenece a la cuenta de origen; el de recepción aparece como reciente en la cuenta destinataria validada.
+- Historial exclusivo de la cuenta activa validada, filtros combinables por tipo y fechas, 20 por página. PDF general y filtrado, sin limitarse a la página actual.
+- Seguridad: sesión y rol, CSRF, token de formulario de un solo uso, confirmación de transferencia ligada a cuenta/QR/monto y válida dos minutos, validación de propiedad en SQL, centavos enteros, bloqueo de filas y transacciones InnoDB. La sesión expira por inactividad en cinco minutos.
 
-Ahora se inicia sesión con **nombre de usuario + PIN**, no necesariamente cédula. Los usuarios originales cuyo nombre de usuario coincide con su cédula conservan su acceso. Se admiten entre 1 y 50 caracteres ASCII: letras, números, puntos, guiones y guiones bajos. El PIN conserva ceros iniciales y se almacena mediante `password_hash`. Restablecerlo desbloquea y reinicia intentos sin activar automáticamente un usuario inactivo. El estado de usuario y el estado de sus cuentas son independientes. Un bloqueo de intentos no equivale a desactivación administrativa.
+## Cámara y escaneo QR
 
-## Pruebas
+El lector compartido está integrado en la validación de cuenta y en transferencias. Usa BarcodeDetector cuando está disponible y admite la biblioteca local html5-qrcode 2.3.8 como alternativa. La descarga de esta biblioteca quedó pendiente por falta de acceso externo en el entorno de construcción: ejecuta `powershell.exe -NoProfile -ExecutionPolicy Bypass -File documentacion/instalar-lector-qr.ps1` desde Git Bash para incorporarla. Consulta `documentacion/CAMARA.md` para compatibilidad, permisos y pruebas. El login no requiere cámara. Usa localhost en PC o HTTPS válido en celular/hosting; no se necesita Iriun ni DroidCam. No se exponen imágenes de cámara al servidor. El hosting no deberá exponer configuraciones, scripts de prueba ni SQL.
 
-Consulta `documentacion/PRUEBAS.md`. Ejecuta en una base local de pruebas, sin usuarios concurrentes. El archivo `tests/fase46_validaciones.php` no requiere MySQL; `tests/fase46_integracion.php` requiere una base configurada y utiliza una transacción revertida al finalizar.
+## Pruebas y Git Flow
 
-## Arquitectura
-
-Los módulos nuevos comparten `ModuloAdministrativoController`, las vistas `views/components/admin/modulo*.php`, el modelo base `GestionAdministrativa` y `crud.css`, manteniendo servicios y modelos específicos para usuarios, cuentas, tarjetas y movimientos. Las acciones de escritura se protegen mediante rol ADMIN, POST, CSRF, validaciones y consultas preparadas PDO. Las operaciones de cuenta y QR usan transacciones InnoDB.
+Consulta `documentacion/PRUEBAS-FASE5.md` y `documentacion/GIT-FLOW.md`. Las pruebas completas con MySQL y navegador siguen pendientes en XAMPP; no se declara el proyecto listo para producción. Las pruebas de integración crean datos temporales y revierten la transacción; ejecútalas únicamente sobre una base local de pruebas sin actividad concurrente. Las operaciones manuales del navegador sí persisten.

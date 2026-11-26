@@ -175,10 +175,12 @@ try {
 
     $idUsuario = (int) $conexion->lastInsertId();
 
+    comprobar("Nombre personalizado no permite iniciar sesión", !$servicio->autenticar($nombreUsuario, "1234", "CLIENTE")["exito"]);
+
     // PRUEBA 8: primer intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "9999",
         "CLIENTE"
     );
@@ -195,7 +197,7 @@ try {
     // PRUEBA 9: reinicio de intentos.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "1234",
         "CLIENTE"
     );
@@ -203,7 +205,7 @@ try {
     $datos = $modelo->buscarPorId($idUsuario);
 
     comprobar(
-        "Acceso personalizado y reinicio de intentos con PIN correcto",
+        "Acceso por cédula con usuario personalizado y reinicio de intentos",
         $resultado["exito"] &&
         (int) $datos["intentos_fallidos"] === 0
     );
@@ -211,7 +213,7 @@ try {
     // PRUEBA 10: PIN con formato incorrecto.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "12",
         "CLIENTE"
     );
@@ -227,7 +229,7 @@ try {
     // Segundo intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "9999",
         "CLIENTE"
     );
@@ -246,7 +248,7 @@ try {
     // Tercer intento incorrecto.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "9999",
         "CLIENTE"
     );
@@ -265,7 +267,7 @@ try {
     // PRUEBA 13: usuario bloqueado con PIN correcto.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "1234",
         "CLIENTE"
     );
@@ -290,7 +292,7 @@ try {
     // PRUEBA 14: usuario desactivado.
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "1234",
         "CLIENTE"
     );
@@ -311,7 +313,7 @@ try {
     $stmt->execute([$idUsuario]);
 
     $resultado = $servicio->autenticar(
-        $nombreUsuario,
+        $cedula,
         "1234",
         "CLIENTE"
     );

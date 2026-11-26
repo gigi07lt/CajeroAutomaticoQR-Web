@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/../libraries/QrPng.php';
 // Suite transaccional: no deja usuarios, cuentas, tarjetas ni movimientos de prueba.
 if(PHP_SAPI!=='cli'){http_response_code(403);exit('Acceso no permitido.');}
 require_once __DIR__.'/../config/database.php';

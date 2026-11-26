@@ -1,28 +1,26 @@
-# Integración de la entrega única con Git Flow
+# Git Flow — fase 5
 
-El ZIP contiene archivos, no historial Git ni commits nuevos. Se conserva la base `2c2e733`. Si quieres mantener el repositorio existente, no sustituyas su carpeta `.git` ni su configuración privada.
-
-1. Antes de copiar el ZIP, sincroniza `develop` y crea una rama:
+Base: `536722a` (merge PR #7 hacia `develop`). Este ZIP contiene archivos y no crea commits ni reemplaza el historial.
 
 ```bash
 git switch develop
 git pull --ff-only origin develop
-git switch -c feature/modulos-administrativos-46
+git switch -c feature/cajero-cliente
 ```
 
-2. Extrae el ZIP en una carpeta temporal y copia su contenido sobre el proyecto. No copies una carpeta adicional dentro del proyecto. Comprueba `git status --short -uall`.
-3. Ejecuta las pruebas de `PRUEBAS.md`. Una vez aprobadas, organiza los commits. Propuesta (en español):
+Copia el contenido del ZIP sobre el repositorio, conservando `.git` y `config/config.php`. Verifica `git status --short -uall`. No subas configuración privada, dumps, imágenes QR descargadas ni PDF de clientes.
 
-| Grupo | Archivos principales | Mensaje |
+Después de revisar la ejecución, una propuesta de commits en español:
+
+| Grupo | Archivos | Mensaje |
 |---|---|---|
-| Base compartida | `models/GestionAdministrativa.php`, `controllers/ModuloAdministrativoController.php`, `views/components/admin/modulo*.php`, `assets/css/crud.css` | Arquitectura: componentes compartidos de gestion administrativa |
-| Usuarios | `models/UsuarioAdministrativo.php`, `services/GestionUsuariosService.php`, `views/admin/usuarios/`, `services/AutenticacionService.php`, `assets/js/login.js`, `tests/autenticacion.php` | Usuarios: gestion de credenciales y acceso personalizado |
-| Cuentas | `models/CuentaAdministrativa.php`, `services/GestionCuentasService.php`, `views/admin/cuentas/` | Cuentas: apertura y ciclo de vida transaccional |
-| Tarjetas | `models/TarjetaAdministrativa.php`, `libraries/QrPng.php`, `views/admin/tarjetas/` | Tarjetas: consulta y descarga de codigos QR |
-| Movimientos | `models/MovimientoAdministrativo.php`, `services/ConsultaMovimientosService.php`, `views/admin/movimientos/` | Movimientos: consultas y filtros combinables |
-| Dashboard | `views/admin/index.php` | Integracion: habilitar modulos administrativos |
-| Pruebas y documentación | `tests/fase46_*.php`, `README.md`, `documentacion/` | Pruebas: validacion integral y documentacion de fase 4.6 |
+| Persistencia | `models/Cajero.php` | Modelo: consultas de cuentas y movimientos del cliente |
+| Reglas bancarias | `services/CajeroService.php` | Servicio: operaciones bancarias transaccionales y validaciones |
+| Acceso | `config/cajero.php`, `config/config.example.php`, `controllers/AccesoCuentaController.php`, `models/Usuario.php`, `services/AutenticacionService.php`, `assets/js/login.js`, `tests/autenticacion.php`, `services/SesionService.php`, `views/cliente/acceso.php`, `views/auth/login.php`, `index.html` | Autenticacion: acceso por cedula y validacion de cuenta con QR |
+| Controlador | `controllers/CajeroController.php` | Controlador: seleccion de cuenta y flujo seguro del cajero |
+| Interfaz | `views/cliente/index.php`, `views/cliente/movimientos.php`, `views/cliente/qr.php`, `assets/css/cajero.css`, `assets/js/cajero.js` | Interfaz: operaciones, tarjetas e historial del cliente |
+| PDF | `reports/CajeroPDF.php`, `views/cliente/pdf.php`, `reports/MovimientosPDF.php` | Reportes: comprobantes y movimientos bancarios en PDF |
+| Pruebas | `tests/fase5_validaciones.php`, `tests/fase5_integracion.php` | Pruebas: validaciones e integracion del cajero |
+| Documentación | `README.md`, `documentacion/` | Documentacion: fase cinco y preparacion del lector QR |
 
-Como esta es una entrega integral, los commits intermedios pueden depender de archivos que se incorporan en commits posteriores. Comprueba la rama completa antes del PR. Usa `git diff --cached --check` en cada commit.
-
-4. Sincroniza con `develop`, sube la rama y crea un PR con base **develop**, no main. Conserva los commits mediante la opción Create a merge commit.
+Los commits intermedios de esta entrega integrada pueden depender de cambios posteriores. Valida la rama completa antes de crear PR. Ejecuta `git diff --cached --check` antes de cada commit y comprueba que no existan secretos en el diff. Publica `feature/cajero-cliente`, crea PR hacia **develop**, nunca main, y conserva los commits con merge commit. La cámara se integra en la misma rama. Añade un commit específico para el lector, componente, controladores, estilos y documentación. Instala y versiona también la biblioteca alternativa y su licencia antes del PR.

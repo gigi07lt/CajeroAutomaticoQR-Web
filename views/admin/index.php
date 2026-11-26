@@ -60,7 +60,7 @@ require __DIR__ . "/../components/admin/inicio.php";
             "UTF-8"
         ) ?>.
 
-        Selecciona un módulo para comenzar.
+
 
     </p>
 
@@ -127,7 +127,7 @@ require __DIR__ . "/../components/admin/inicio.php";
             "titulo" => "Tarjetas QR activas",
             "valor" => $datos["tarjetas"],
             "descripcion" =>
-                "Consultar y descargar imágenes QR.",
+                "Consultar tarjetas vigentes e historial.",
             "icono" => "▦",
             "color" => "naranja",
             "ruta" => "views/admin/tarjetas/index.php"

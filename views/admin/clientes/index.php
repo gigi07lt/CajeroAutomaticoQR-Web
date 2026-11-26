@@ -93,12 +93,7 @@ require __DIR__ .
 
         <h1>Gestión de clientes</h1>
 
-        <p class="texto-secundario">
-
-            Consulta y administra los clientes
-            registrados en Banco FISEI.
-
-        </p>
+        
 
     </div>
 

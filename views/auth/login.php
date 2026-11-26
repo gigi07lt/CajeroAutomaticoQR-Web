@@ -34,82 +34,23 @@ require_once __DIR__ . "/../../services/CsrfService.php";
 
             <div>
                 <strong>BANCO FISEI</strong>
-                <small>Banca digital</small>
+                
             </div>
 
         </div>
 
-        <span class="etiqueta-seguridad">
-            Simulación académica
-        </span>
+
 
     </header>
 
     <main class="login-contenedor">
 
-        <!-- PRESENTACION DEL BANCO -->
-
-        <section class="presentacion">
-
-            <span class="subtitulo">
-                BIENVENIDO A TU BANCA DIGITAL
-            </span>
-
-            <h1>
-                Tu banco,<br>
-                siempre contigo.
-            </h1>
-
-            <p>
-                Consulta tus cuentas, realiza operaciones
-                bancarias y transfiere mediante códigos QR
-                desde un solo lugar.
-            </p>
-
-            <div class="tarjetas-decorativas">
-
-                <div class="tarjeta-secundaria"></div>
-
-                <div class="tarjeta-bancaria">
-
-                    <strong>BANCO FISEI</strong>
-
-                    <div class="chip"></div>
-
-                    <div class="numero-tarjeta">
-                        •••• •••• •••• 0001
-                    </div>
-
-                    <div class="tarjeta-inferior">
-                        <small>TARJETA DIGITAL QR</small>
-                        <span>◉</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="beneficios">
-
-                <span>✓ Gestión de cuentas</span>
-
-                <span>✓ Transferencias QR</span>
-
-                <span>✓ Acceso protegido</span>
-
-            </div>
-
-        </section>
-
-        <!-- FORMULARIO DE ACCESO -->
 
         <section class="login-panel">
 
             <h2>Iniciar sesión</h2>
 
-            <p class="texto-secundario">
-                Ingresa tus credenciales de acceso.
-            </p>
+
 
             <?php if ($error !== ""): ?>
 
@@ -178,7 +119,7 @@ require_once __DIR__ . "/../../services/CsrfService.php";
 
                     <label for="usuario"
                            id="labelUsuario">
-                        Usuario
+                        <?= $rolSeleccionado === "CLIENTE" ? "Cédula" : "Nombre de usuario" ?>
                     </label>
 
                     <input type="text"
@@ -260,15 +201,13 @@ require_once __DIR__ . "/../../services/CsrfService.php";
                 <button type="submit"
                         class="btn btn-primario btn-ingresar">
 
-                    Ingresar al sistema →
+                    Ingresar
 
                 </button>
 
             </form>
 
-            <p class="nota-acceso">
-                Acceso exclusivo para usuarios registrados.
-            </p>
+
 
         </section>
 
@@ -277,7 +216,7 @@ require_once __DIR__ . "/../../services/CsrfService.php";
     <footer class="login-footer">
 
         Banco FISEI &copy; <?= date("Y") ?>
-        | Proyecto académico de simulación bancaria
+        | Simulación académica
 
     </footer>
 

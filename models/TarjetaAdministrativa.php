@@ -7,7 +7,7 @@ class TarjetaAdministrativa extends GestionAdministrativa
     public function listar(string $buscar,int $pagina): array
     {
         $w=[];$p=[];if($buscar!==''){ $w[]="(t.codigo_qr LIKE ? ESCAPE '!' OR t.numero_cuenta LIKE ? ESCAPE '!' OR c.nombres LIKE ? ESCAPE '!' OR c.cedula LIKE ? ESCAPE '!')";$p=array_fill(0,4,$this->like($buscar)); }
-        return $this->paginar(self::CAMPOS,self::ORIGEN,$w,$p,'t.fecha_emision DESC,t.codigo_qr',$pagina);
+        return $this->paginar(self::CAMPOS,self::ORIGEN,$w,$p,'t.activa DESC,t.fecha_emision DESC,t.codigo_qr',$pagina);
     }
     public function ver(string $codigo): ?array { return $this->uno('SELECT '.self::CAMPOS.' '.self::ORIGEN.' WHERE t.codigo_qr=?',[$codigo]); }
 }

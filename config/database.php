@@ -1,5 +1,6 @@
 <?php
-
+// Zona horaria de Ecuador continental.
+date_default_timezone_set('America/Guayaquil');
 function obtenerConexion(): PDO
 {
     static $conexion = null;
